@@ -25,6 +25,8 @@
             <tbody>
             </tbody>
         </table>
+       
+
     </div>
 </div>
 @section scripts
@@ -38,6 +40,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src=" https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
     <script src=" https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
+   
     <script>
        $(document).ready(loadTable());   
         function loadTable() {
@@ -66,8 +69,12 @@
                     {
                         data: "ImagePath", searchable: false,
                         render: function (data, type, row, meta) {
-                            var imgsrc = 'data:image/png;base64,' + data; // here data should be in base64 string
-                            return '<img class="img-responsive" src="' + imgsrc + '" alt="No image" height="50px" width="50px">';
+                            var imgsrc = 'data:image/png;base64,' + data;
+                            if (data === null) {
+                                return '<img class="img-responsive"  src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" alt="No image" height="50px" width="50px">';
+
+                            }
+                            return '<img class="img-responsive"  src="' + imgsrc + '" alt="No image" height="50px" width="50px">';
                         }
                     },
                 ],
@@ -79,6 +86,12 @@
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
                 ],
+                columnDefs: [
+                    {
+                        targets: 3,
+                        className: 'zoom'
+                    }
+                ]
 
 
             }).fnSetFilteringDelay();
@@ -119,8 +132,6 @@
 };
 
 
-
-
     </script>
 }
 
@@ -132,4 +143,11 @@
     #iconPlus {
         color: #1abc9c;
     }
+
+    .zoom img:hover {
+        transform: scale(7.5);
+        transition: 0.6s ease;
+       
+    }
+
 </style>

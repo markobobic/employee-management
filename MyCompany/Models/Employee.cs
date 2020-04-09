@@ -30,12 +30,7 @@ namespace MyCompany.Models
                 return LastName + " " + FirstName;
             }
         }
-
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Employee Enrollment Date")]
-        [Index]
-        public DateTime EnrollmentDate { get; set; }
+        
         public virtual ICollection<EmployeeEnrollment> EmployeeEnrollments { get; set; }
 
         public string LivingAddress { get; set; }
@@ -44,27 +39,25 @@ namespace MyCompany.Models
         public string Education { get; set; }
 
         public string Mobile { get; set; }
-        public string WorkPhone { get; set; }
         public string ReportsTo { get; set; }
-
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Employee Enrollment Date")]
+        
         [Index]
-        public DateTime OfficialWorkStart { get; set; }
+        public DateTime? OfficialWorkStart { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Employee Enrollment Date")]
         [Index]
         public DateTime WorkStart { get; set; }
-        public string WorkEmail { get; set; }
-        public string PersonalEmail { get; set; }
         [ForeignKey("TeamLead")]
         public int? TeamLeadID { get; set; }
-
+        [ForeignKey("Sector")]
+        public int? SectorID { get; set; }
+        [ForeignKey("ClientSector")]
+        public int? ClientSectorID { get; set; }
         public string ImagePath { get; set; }
         public virtual TeamLead TeamLead { get; set; }
+        public virtual ClientSector ClientSector { get; set; }
+        public virtual Sector Sector { get; set; }
         public Employee()
         {
 

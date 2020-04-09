@@ -56,7 +56,7 @@ namespace MyCompany.Controllers
                        Id = s.Id,
                        FirstName = s.FirstName,
                        LastName = s.LastName,
-                       EnrollmentDate = s.EnrollmentDate,
+                       WorkStart = s.WorkStart,
                        ImagePath = s.ProductImage != null ? Convert.ToBase64String(s.ProductImage) : null,
                        PhotoType = s.PhotoType
                    })
@@ -122,7 +122,7 @@ namespace MyCompany.Controllers
                      Id = m.EmployeeID,
                      FirstName = m.FirstName,
                      LastName = m.LastName,
-                     EnrollmentDate = m.EnrollmentDate,
+                     WorkStart = m.WorkStart,
                      ProductImage = m.Photo
                  }).ToList();
 
@@ -136,7 +136,7 @@ namespace MyCompany.Controllers
                     Id = m.EmployeeID,
                     FirstName = m.FirstName,
                     LastName = m.LastName,
-                    EnrollmentDate = m.EnrollmentDate,
+                    WorkStart = m.WorkStart,
                     ProductImage = m.Photo
                 }).ToList(); 
 
@@ -190,10 +190,33 @@ namespace MyCompany.Controllers
             }
             return View(employee);
         }
+
+        public ActionResult GetSectors()
+        {
+            return Json(db.Sectors.ToList(), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetClientSector(int SectorID)
+        {
+            var products = db.ClientSectors.Where(x=>x.SectorID == SectorID).ToList();
+            return Json(products, JsonRequestBehavior.AllowGet);
+        }
+
+
         [Admin]
         public ActionResult Create()
         {
-            ViewBag.TeamLeadID = new SelectList(db.Employees.Include("TeamLead").Where(x => x.TeamLeadID > 0).ToList(), "TeamLeadID", "FullName");
+
+            var teamLeads =
+            from employee in db.Employees
+            join teamLead in db.TeamLeads on employee.EmployeeID equals teamLead.EmployeeID
+            select new { FullName = employee.FirstName + " " + employee.LastName, TeamLeadID = teamLead.TeamLeadID };
+
+            ViewBag.TeamLeadID = new SelectList(teamLeads.ToList(), "TeamLeadID", "FullName");
+            //ViewBag.SectorID = new SelectList(db.Sectors.ToList(), "SectorID", "Name");
+
+
+
             return View();
         }
 
@@ -215,22 +238,28 @@ namespace MyCompany.Controllers
                     }
                     employeeSave.FirstName = employee.FirstName;
                     employeeSave.LastName = employee.LastName;
-                    employeeSave.EnrollmentDate = employee.EnrollmentDate;
                     employeeSave.Education = employee.Education;
                     employeeSave.OfficialWorkStart = employee.OfficialWorkStart;
                     employeeSave.WorkStart = employee.WorkStart;
-                    //employeeSave.TeamLeadID = employee.TeamLeadID;
-                    
+                    employeeSave.TeamLeadID = employee.TeamLeadID;
+                    employeeSave.SectorID = employee.SectorID;
+                    employeeSave.ClientSectorID = employee.ClientSectorID;
+
                     db.Employees.Add(employeeSave);
                     await db.SaveChangesAsync();
                     if (employee.IsActive == true) { 
                     {
-                        await AddUser(employeeSave.EmployeeID, employee.IsActive, employee.Password, employee.RoleID, employee.UserName);
+                        await AddUser(employeeSave.EmployeeID, employee.IsActive, employee.Password, employee.RoleID, employee.UserName,employee.Email);
                     };
                     }
                    if( employee.IsTeamLead == true)
                     {
                         await AddTeamLead(employeeSave);
+                    }
+
+                   if(employee.OfficialWorkStart != null)
+                    {
+                        await AddEnnrolemnt(employee, employeeSave.EmployeeID);
                     }
                        return RedirectToAction("Index");
                     
@@ -241,10 +270,15 @@ namespace MyCompany.Controllers
                 
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
+            var teamLeads =
+              from emp in db.Employees
+              join teamLead in db.TeamLeads on emp.EmployeeID equals teamLead.EmployeeID
+              select new { FullName = emp.FirstName + " " + emp.LastName, TeamLeadID = teamLead.TeamLeadID };
+            ViewBag.TeamLeadID = new SelectList(teamLeads.ToList(), "TeamLeadID", "FullName");
             return View(employee);
         }
 
-        public async Task AddTeamLead(Employee emp)
+        private async Task AddTeamLead(Employee emp)
         {
             TeamLead teamLead = new TeamLead();
             teamLead.EmployeeID =emp.EmployeeID;
@@ -253,8 +287,16 @@ namespace MyCompany.Controllers
             await db.SaveChangesAsync();
            
         }
+        private async Task AddEnnrolemnt(EmployeeViewModel emp,int id)
+        {
+           var employeeEnrollment = new EmployeeEnrollment();
+            employeeEnrollment.EmployeeID = id;
+            employeeEnrollment.Level =(Level)emp.Positions;
+            db.EmployeeEnrollments.Add(employeeEnrollment);
+            await db.SaveChangesAsync();
 
-        public  async Task AddUser(int id,bool isActive,string password,int roleID,string userName)
+        }
+        private async Task AddUser(int id,bool isActive,string password,int roleID,string userName,string email)
         {
             User user = new User();
             user.EmployeeID = id;
@@ -262,11 +304,56 @@ namespace MyCompany.Controllers
             user.Password = password;
             user.RoleID = roleID;
             user.UserName = userName;
+            user.Email = email;
             db.Users.Add(user);
             await db.SaveChangesAsync();
            
         }
+        [HttpGet]
+        public async Task<ActionResult> EditProfile(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            string query = "SELECT * FROM Employees WHERE EmployeeID = @p0";
+            Employee employee = await db.Employees.SqlQuery(query, id).SingleOrDefaultAsync();
+            if (employee == null)
+            {
+                return HttpNotFound();
+            }
+            return View(employee);
+        }
+        [HttpPost]
+        public async Task<ActionResult> EditProfile(Employee emp,HttpPostedFileBase image)
+        {
+            var employee = db.Employees.Find(emp.EmployeeID);
+            if (image != null)
+            {
+                employee.PhotoType = image.ContentType;
+                employee.Photo = new byte[image.ContentLength];
+                image.InputStream.Read(employee.Photo, 0, image.ContentLength);
+            }
+
+            employee.Education = emp.Education;
+            employee.AddressFromCard = emp.AddressFromCard;
+            employee.LivingAddress = emp.LivingAddress;
+            employee.Mobile = emp.Mobile;
+            db.Entry(employee).State = System.Data.Entity.EntityState.Modified;
+            try
+            {
+              await  db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return RedirectToAction("UserDashBoard","Home");
+
+        }
         
+        [HttpGet]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)

@@ -4,7 +4,7 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+
 
 
 @using (Html.BeginForm("Create", "Employee", FormMethod.Post, new
@@ -19,11 +19,9 @@
     
     <div  style="border:1px solid #cecece; line-height:25px">
         <img id="picture" src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" style="max-height:100px;max-width:100px;"  alt="avatar">
-        <a class="btn btn-outline-success" href="javascript:;">
             <input id="inputID" type="file" name="image" size="40"
                    style="display:none;"
                    onchange="readURL(this);" />
-        </a>
         <span class="label label-info" id="upload-file-info"></span>
         <br /><br />
         <ul class="list-unstyled" id="toImage" style="padding-left:3%;">
@@ -40,18 +38,18 @@
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="personal-details">
-               
+
                 <div class="form-group">
                     <div class="col-xs-6">
                         <label for="FirstName"><h4>First name</h4></label>
-                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter first name",@id="firstName" } })
+                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter first name", @id = "firstName" } })
                         @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-xs-6">
                         <label for="LastName"><h4>Last name</h4></label>
-                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter first name",@id="lastName" } })
+                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter first name", @id = "lastName" } })
                         @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -59,7 +57,7 @@
                 <div class="form-group">
                     <div class="col-xs-6">
                         <label for="LivingAddress"><h4>Address</h4></label>
-                        @Html.EditorFor(model => model.LivingAddress, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter living address",@id="livingAddress" } })
+                        @Html.EditorFor(model => model.LivingAddress, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter living address", @id = "livingAddress" } })
                         @Html.ValidationMessageFor(model => model.LivingAddress, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -77,7 +75,7 @@
                         @Html.ValidationMessageFor(model => model.AddressFromCard, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
+               
                 <div class="form-group">
                     <div class="col-xs-6">
                         <h4>Is active?</h4>
@@ -88,38 +86,24 @@
                         </label>
                     </div>
                 </div>
-
                 <hr>
 
             </div><!--/tab-pane-->
             <div class="tab-pane" id="organizational">
+
                 <div class="form-group">
 
                     <div class="col-xs-6">
-                        <label for="first_name"><h4>Work phone</h4></label>
-                        <input type="text" class="form-control" name="first_name" id="first_name" placeholder="first name" title="enter your first name if any.">
-                    </div>
-                </div>
-                <div class="form-group">
-
-                    <div class="col-xs-6">
-                        <label for="last_name"><h4>Reports to</h4></label>
-                        <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" title="enter your last name if any.">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-xs-6">
-                        <label for="mobile"><h4>Mobile</h4></label>
-                        <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
+                        <label for="ReportsTo"><h4>Reports to</h4></label>
+                        <input type="text" class="form-control" name="ReportsTo" id="last_name" placeholder="last name" title="enter your last name if any.">
                     </div>
                 </div>
                
                 <div class="form-group">
                     <div class="col-xs-6">
-                        <label for="EnrollmentDate"><h4>Enrollment date</h4></label>
-                        @Html.EditorFor(model => model.EnrollmentDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter your enrollmentdate" } })
-                        @Html.ValidationMessageFor(model => model.EnrollmentDate, "", new { @class = "text-danger" })
+                        <label for="Mobile"><h4>Mobile</h4></label>
+                        @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter address from ID" } })
+                        @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
@@ -136,26 +120,40 @@
                         @Html.ValidationMessageFor(model => model.OfficialWorkStart, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <h4>Is team lead?</h4>
+                        <label class="switch" style="margin:0px;">
+                            <input id="isTeamLead" name="IsTeamLead" type="checkbox" value="true" class="switch-input">
+                            <span class="switch-label" data-on="" data-off=""></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="SectorID"><h4>Sectors</h4></label>
+                        <select class="form-control" name="SectorID" id="sector">
+                        </select>
+                    </div>
+                </div>
+
 
                 <div class="form-group">
                     <div class="col-xs-6">
                         <label for="TeamLeadID"><h4>Team Leaders</h4></label>
-                        @Html.DropDownList("TeamLeadID", null, "Select option", htmlAttributes: new { @class = "form-control" })
+                        @Html.DropDownList("TeamLeadID", null, "Select option", htmlAttributes: new { @id = "dropdownTeamLead", @class = "form-control" })
                     </div>
-                        </div>
-
-
-                    <div class="form-group">
-                        <div class="col-xs-6">
-                            <h4>Is team lead?</h4>
-                            <label class="switch" style="margin:0px;">
-                                <input id="isTeamLead" name="IsTeamLead" type="checkbox" value="true" class="switch-input">
-                                <span class="switch-label" data-on="" data-off=""></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="ClientSectorID"><h4>Client sectors</h4></label>
+                        <select class="form-control" id="clientSector" name="ClientSectorID">
+                        </select>
                     </div>
-                </div><!--/tab-pane-->
+                </div>
+            </div><!--/tab-pane-->
             <div class="tab-pane" id="system">
                 <div class="form-group">
                     <div class="col-xs-6">
@@ -172,18 +170,11 @@
                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
                 <div class="form-group">
                     <div class="col-xs-6">
-                        <label for="mobile"><h4>Mobile</h4></label>
-                        <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
-                    </div>
-                </div>
-                <div class="form-group">
-
-                    <div class="col-xs-6">
-                        <label for="email"><h4>Email</h4></label>
-                        <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
+                        <label for="Email"><h4>Email</h4></label>
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter living address" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
@@ -197,10 +188,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-
                     <div class="col-xs-6">
-                        <label for="email"><h4>Mobile phone</h4></label>
-                        <input type="email" class="form-control" id="location" placeholder="somewhere" title="enter a location">
+                        <label for="Position"><h4>Developer level</h4></label>
+                        @Html.EnumDropDownListFor(
+                x => x.Positions,
+                "Select level",
+                new { @class = "form-control" })
                     </div>
                 </div>
 
@@ -241,15 +234,27 @@
 
     $('#isActive').click(function () {
         var checking = $(this).prop("checked");
-        if (checking == false) {
+        if (checking === false) {
             $("#systemTab").remove();
-        } else if (checking == true) {
+        } else if (checking === true) {
             $('#listTabs').append(' <li><a data-toggle="tab" id="systemTab" href="#system">System</a></li>');
         }
     });
+
+    $('#isTeamLead').click(function () {
+        var checking = $(this).prop("checked");
+        if (checking === true) {
+            document.getElementById("dropdownTeamLead").disabled = true;
+        } else if (checking === false) {
+            document.getElementById("dropdownTeamLead").disabled = false;
+        }
+    });
+
+
+
     $(document).ready(function () {
         $('#fileForm').on('submit', function (e) {
-            // validation code here
+           
             if (valid) {
                 e.preventDefault();
             }
@@ -270,6 +275,44 @@
      inputAddress.onkeyup = function(){
     document.getElementById('targetAddress').innerHTML = inputAddress.value;
     }
+
+
+
+
+    $(document).ready(function () {
+       
+        $.getJSON('/Employee/GetSectors', null, function (data) {
+            $.each(data, function () {
+                $('#sector').append('<option value=' +
+                    this.SectorID + '>' + this.Name + '</option>');
+            });
+            $.getJSON('/Employee/GetClientSector', { SectorID: $('#sector').val() }, function (data) {
+                $.each(data, function () {
+                    $('#clientSector').append('<option value=' +
+                        this.Id + '>' + this.Name + '</option>');
+                });
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                alert('Error getting products!');
+            });
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert('Error getting categories!');
+        });
+        
+        $('#sector').change(function () {
+            $('#clientSector option').remove();
+            $.getJSON('/Employee/GetClientSector', { SectorID: $('#sector').val() }, function (data) {
+                $.each(data, function () {
+                    $('#clientSector').append('<option value=' +
+                        this.Id + '>' + this.Name + '</option>');
+                });
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                alert('Error getting products!');
+            });
+        });
+    });
+
+
+
 
 </script>
 

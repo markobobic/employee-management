@@ -281,3 +281,5 @@ C:\Users\marko\Desktop\ServerSide\MyCompany\obj\Debug\MyCompany.csproj.CopyCompl
 C:\Users\marko\Desktop\ServerSide\MyCompany\obj\Debug\MyCompany.csproj.CoreCompileInputs.cache
 C:\Users\marko\Desktop\ServerSide\MyCompany\obj\Debug\MyCompany.csproj.GenerateResource.cache
 C:\Users\marko\Desktop\ServerSide\MyCompany\obj\Debug\MyCompany.Migrations.Initilize.resources
+C:\Users\marko\Desktop\ServerSide\MyCompany\obj\Debug\MyCompany.Migrations.Update.resources
+C:\Users\marko\Desktop\ServerSide\MyCompany\obj\Debug\MyCompany.Migrations.EmployeeChanges.resources

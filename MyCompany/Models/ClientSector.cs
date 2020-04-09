@@ -15,15 +15,11 @@ namespace MyCompany.Models
         public string Name { get; set; }
         [ForeignKey("Sectors")]
         public int SectorID { get; set; }
-        [ForeignKey("Employees")]
-        public int? EmployeeID { get; set; }
         public virtual ICollection<Sector> Sectors { get; set; }
-        public virtual ICollection<Employee> Employees { get; set; }
 
 
         public ClientSector()
         {
-            this.Employees = new HashSet<Employee>();
             this.Sectors = new HashSet<Sector>();
         }
     }

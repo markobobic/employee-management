@@ -10,7 +10,7 @@ namespace MyCompany.DataTableModel
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime EnrollmentDate { get; set; }
+        public DateTime WorkStart { get; set; }
 
         public byte[] ProductImage { get; set; }
         public string ImagePath { get; set; }

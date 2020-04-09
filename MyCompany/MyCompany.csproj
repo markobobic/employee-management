@@ -166,6 +166,14 @@
     <Compile Include="Migrations\202004080029234_Initilize.designer.cs">
       <DependentUpon>202004080029234_Initilize.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004091133416_Update.cs" />
+    <Compile Include="Migrations\202004091133416_Update.designer.cs">
+      <DependentUpon>202004091133416_Update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004091753304_EmployeeChanges.cs" />
+    <Compile Include="Migrations\202004091753304_EmployeeChanges.designer.cs">
+      <DependentUpon>202004091753304_EmployeeChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClientSector.cs" />
     <Compile Include="Models\CurrentRole.cs" />
@@ -248,6 +256,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202004080029234_Initilize.resx">
       <DependentUpon>202004080029234_Initilize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004091133416_Update.resx">
+      <DependentUpon>202004091133416_Update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004091753304_EmployeeChanges.resx">
+      <DependentUpon>202004091753304_EmployeeChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

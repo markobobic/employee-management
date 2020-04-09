@@ -23,11 +23,11 @@
         <div class="text-center">
             @if (Model.Photo == null)
             {
-                <img id="pciture" class="avatar img-circle img-thumbnail" src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" style="max-height:100px;  margin-left:45px; max-width:100px;" alt="">
+                <img id="profilePiciture" class="avatar img-circle img-thumbnail" src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" style="max-height:100px;  margin-left:45px; max-width:100px;" alt="">
             }
             else
             {
-               <img id="picture" class="avatar  img-circle img-thumbnail" src=@("data:" + Model.PhotoType + ";base64," + Convert.ToBase64String(Model.Photo)) style="max-height:100px;  margin-left:45px; max-width:100px;" alt="" />
+               <img id="profilePiciture" class="avatar  img-circle img-thumbnail" src=@("data:" + Model.PhotoType + ";base64," + Convert.ToBase64String(Model.Photo)) style="max-height:100px;  margin-left:45px; max-width:100px;" alt="" />
               
             }
         </div></hr><br>
@@ -86,18 +86,14 @@
             </div><!--/tab-pane-->
 
             <div class="tab-pane" id="editDetails">
-                @using (Html.BeginForm("Edit", "Employee", FormMethod.Post, new
+                @using (Html.BeginForm("EditProfile", "Employee", FormMethod.Post, new
                 {
                     enctype = "multipart/form-data",
                     id = "fileForm"
                 }))
                 {
                     @Html.HiddenFor(model => model.EmployeeID)
-                    <a class="btn btn-outline-success" href="javascript:;">
-                        <input id="inputID" type="file" name="image" size="40"
-                               style="display:none;"
-                               onchange="readURL(this);" />
-                    </a>
+
                     <div class="form-group">
                         <div class="col-xs-6">
                             <label for="LivingAddress"><h4>Address</h4></label>
@@ -105,7 +101,9 @@
                             @Html.ValidationMessageFor(model => model.LivingAddress, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
+                        <input id="inputID" type="file" name="image" size="40"
+                               style="display:none;"
+                               onchange="readURL(this);" />
                     <div class="form-group">
                         <div class="col-xs-6">
                             <label for="Education"><h4>Education</h4></label>
@@ -120,6 +118,14 @@
                             @Html.ValidationMessageFor(model => model.AddressFromCard, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="Mobile"><h4>Mobile</h4></label>
+                            @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter address from ID" } })
+                            @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
                     <hr>
                     <div class="form-group">
                         <div class="col-xs-12">
@@ -389,28 +395,27 @@
     <div>The div that should be appended</div>
 </script>
 <script>
-    $(document).ready(function () {
-
-
-        var readURL = function (input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $('#picture').attr('src', e.target.result);
-                      $('#dashboardPic').attr('src', e.target.result);
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-
-        $("#inputID").on('change', function () {
-            readURL(this);
+    document.getElementById('editProfile').onclick = function () {
+        $("#profilePiciture").click(function () {
+            $("#inputID").click();
         });
-    });
-    @*var myJsVariable = parseFloat('@ViewBag.Time');*@
+    }
+    
+ 
+    
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#profilePiciture').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+   
     Highcharts.chart('container1', {
     chart: {
         plotBackgroundColor: null,
@@ -487,22 +492,6 @@
          $('#tabs').append('<li><a data-toggle="tab" id="editTab" href="#editDetails">Edit Personal Details</a></li>');
          $( "#editTab" ).click();
     });
-
-         $("#picture").click(function () {
-        $("#inputID").click();
-    });
-
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('#picture').attr('src', e.target.result);
-            }
-
-            reader.readAsDataURL(input.files[0]);
-        }
-        }
 
 
         var notification;

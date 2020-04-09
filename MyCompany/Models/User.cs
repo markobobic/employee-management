@@ -21,5 +21,6 @@ namespace MyCompany.Models
         public Role Role { get; set; }
         public Employee Employee { get; set; }
         public bool IsActive { get; set; }
+        public string Email { get; set; }
     }
 }

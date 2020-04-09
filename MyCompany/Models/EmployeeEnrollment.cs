@@ -6,7 +6,7 @@ namespace MyCompany.Models
    
         public enum Level
         {
-            J,M,S
+          None=0,Junior=1,Medior,Senior
         }
         public class EmployeeEnrollment
         {

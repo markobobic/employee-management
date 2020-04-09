@@ -18,17 +18,15 @@ namespace MyCompany.ViewModels
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime EnrollmentDate { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime WorkStart { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime OfficialWorkStart { get; set; }
+        public DateTime? OfficialWorkStart { get; set; }
 
         public string LivingAddress { get; set; }
         public string AddressFromCard { get; set; }
+        public string ReportsTo { get; set; }
 
         public string Education { get; set; }
         public string UserName { get; set; }
@@ -39,7 +37,24 @@ namespace MyCompany.ViewModels
         public bool IsActive { get; set; }
 
         public bool IsTeamLead { get; set; }
-        public int TeamLeadID { get; set; }
+        public int? TeamLeadID { get; set; }
+        public int? SectorID { get; set; }
+        public int? ClientSectorID { get; set; }
+
+        public string Email { get; set; }
+        public string Mobile { get; set; }
+        public Level Positions { get; set; }
+
+        public enum Level
+        {
+            None = 0,
+            [Display(Name = "Junior")]
+            Junior = 1,
+            [Display(Name = "Medior")]
+            Medior = 2,
+            [Display(Name = "Senior")]
+            Senior = 3
+        }
 
     }
 }
