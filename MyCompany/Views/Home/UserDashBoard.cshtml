@@ -1,0 +1,560 @@
+﻿@model  MyCompany.Models.Employee
+
+<!------ Include the above in your HEAD tag ---------->
+
+
+    <head>
+        <title>Dashboard</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    </head>
+<hr>
+<br />
+<br />
+
+
+<div class="row">
+
+    <div class="col-sm-3">
+        <!--left col-->
+
+
+        <div class="text-center">
+            @if (Model.Photo == null)
+            {
+                <img id="pciture" class="avatar img-circle img-thumbnail" src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" style="max-height:100px;  margin-left:45px; max-width:100px;" alt="">
+            }
+            else
+            {
+               <img id="picture" class="avatar  img-circle img-thumbnail" src=@("data:" + Model.PhotoType + ";base64," + Convert.ToBase64String(Model.Photo)) style="max-height:100px;  margin-left:45px; max-width:100px;" alt="" />
+              
+            }
+        </div></hr><br>
+
+        <ul class="list-group">
+            <li class="list-group-item text-muted">Personal details <i class="fa fa-dashboard fa-1x"></i></li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong>Full Name</strong></span>@Model.FullName</li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong>Living Address</strong></span>@Model.LivingAddress</li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong>ID Address</strong></span>@Model.AddressFromCard</li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong>Education</strong></span>@Model.Education</li>
+        </ul>
+        <div class="text-center">
+            <button onclick="@Url.Action("Edit", "Employee")" class="btn btn-lg btn-success" id="editProfile" type="button"><i class="glyphicon glyphicon-ok-sign"></i> Edit Profile</button>
+        </div>
+        <br />
+        <div class="panel panel-default ">
+            <div class="panel-heading text-muted">Absences</div>
+            <ul class="skill-list">
+                <li class="skill">
+                    <h3>Vacations</h3>
+                    <progress class="skill-1" max="100" value="50">
+                        <strong>Skill Level: 50%</strong>
+                    </progress>
+                </li>
+                <li class="skill">
+                    <h3>Sick Leave</h3>
+                    <progress class="skill-2" max="100" value="75">
+                        <strong>Skill Level: 75%</strong>
+                    </progress>
+                </li>
+                <li class="skill">
+                    <h3>Free Days</h3>
+                    <progress class="skill-3" max="100" value="25">
+                        <strong>Skill Level: 25%</strong>
+                    </progress>
+                </li>
+            </ul>
+        </div>
+
+    </div><!--/col-3-->
+    <div id="notification-container" style=" margin-right:77%; margin-top:14%;"></div>
+    <div class="col-sm-9">
+        <ul class="nav nav-tabs" id="tabs">
+            <li class="active"><a data-toggle="tab" href="#profile">Profile</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="profile">
+                <h2 style="margin-left:250px">User report</h2>
+                <br />
+                <figure class="highcharts-figure">
+
+                    <div id="container1"></div>
+                </figure>
+
+                <hr>
+            </div><!--/tab-pane-->
+
+            <div class="tab-pane" id="editDetails">
+                @using (Html.BeginForm("Edit", "Employee", FormMethod.Post, new
+                {
+                    enctype = "multipart/form-data",
+                    id = "fileForm"
+                }))
+                {
+                    @Html.HiddenFor(model => model.EmployeeID)
+                    <a class="btn btn-outline-success" href="javascript:;">
+                        <input id="inputID" type="file" name="image" size="40"
+                               style="display:none;"
+                               onchange="readURL(this);" />
+                    </a>
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="LivingAddress"><h4>Address</h4></label>
+                            @Html.EditorFor(model => model.LivingAddress, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter living address", @id = "livingAddress" } })
+                            @Html.ValidationMessageFor(model => model.LivingAddress, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="Education"><h4>Education</h4></label>
+                            @Html.EditorFor(model => model.Education, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter address from ID" } })
+                            @Html.ValidationMessageFor(model => model.AddressFromCard, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="AddressFromCard"><h4>Address ID</h4></label>
+                            @Html.EditorFor(model => model.AddressFromCard, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter address from ID" } })
+                            @Html.ValidationMessageFor(model => model.AddressFromCard, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <br>
+                            <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                            <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
+                        </div>
+                    </div>
+                }
+            </div><!--/tab-pane-->
+
+        </div><!--/tab-content-->
+
+    </div><!--/col-9-->
+</div><!--/row-->
+
+
+<style>
+
+    h1 {
+        font-size: 5px;
+        font-weight: 800;
+    }
+
+    h3 {
+        font-size: 1em;
+    }
+
+    progress, progress[role] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border: none;
+        background-size: auto;
+        height: 10px;
+        width: 100%;
+    }
+
+
+    .skill-list {
+        list-style: none;
+        margin: 0;
+        padding: 1em;
+    }
+
+
+    .skill {
+        margin-bottom: 1em;
+        position: relative;
+        h3
+
+    {
+        color: #fff;
+        left: 1em;
+        line-height: 1;
+        position: absolute;
+        top: 1em;
+    }
+
+    ::-webkit-progress-value {
+        -webkit-animation: bar-fill 2s;
+        width: 0px;
+    }
+
+    }
+
+
+    .skill-1::-webkit-progress-value {
+        background: #ff9e2c;
+    }
+
+    .skill-1::-moz-progress-bar {
+        background: #ff9e2c;
+    }
+
+    .skill-2::-webkit-progress-value {
+        background: #4ecdc4;
+    }
+
+    .skill-2::-moz-progress-bar {
+        background: #4ecdc4;
+    }
+
+    .skill-3::-webkit-progress-value {
+        background: #ff6b6b;
+    }
+
+    .skill-3::-moz-progress-bar {
+        background: #ff6b6b;
+    }
+
+
+    @@-webkit-keyframes bar-fill {
+        0% {
+            width: 0;
+        }
+    }
+
+    @@keyframes bar-fill {
+        0% {
+            width: 0;
+        }
+    }
+
+    .highcharts-figure, .highcharts-data-table table {
+        min-width: 310px;
+        max-width: 800px;
+        margin: 1em auto;
+    }
+
+    #container1 {
+        height: 400px;
+    }
+
+    .highcharts-data-table table {
+        font-family: Verdana, sans-serif;
+        border-collapse: collapse;
+        border: 1px solid #EBEBEB;
+        margin: 10px auto;
+        text-align: center;
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .highcharts-data-table caption {
+        padding: 1em 0;
+        font-size: 1.2em;
+        color: #555;
+    }
+
+    .highcharts-data-table th {
+        font-weight: 600;
+        padding: 0.5em;
+    }
+
+    .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+        padding: 0.5em;
+    }
+
+    .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+        background: #f8f8f8;
+    }
+
+    .highcharts-data-table tr:hover {
+        background: #f1f7ff;
+    }
+
+    /*nontifications*/
+    #notification-container {
+        display: block;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    .notification {
+        display: block;
+        position: relative;
+        padding: 15px 15px 15px 60px;
+        overflow: hidden;
+        width: 250px;
+        border-radius: 4px;
+        box-shadow: 0 0 12px #999;
+        color: #fff;
+        -webkit-animation: show-notification 3s ease-out;
+        animation: show-notification 3s ease-out;
+    }
+
+    .notification-close {
+        padding: 0;
+        cursor: pointer;
+        background: none;
+        border: 0;
+        outline: none;
+        -webkit-appearance: none;
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        color: #fff;
+        text-shadow: 0 1px 0 #ddd;
+    }
+
+    .notification-title {
+        font-size: 1.1em;
+        font-weight: bold;
+    }
+
+    .notification-success::before,
+    .notification-error::before,
+    .notification-info::before,
+    .notification-warning::before {
+        font-family: 'FontAwesome';
+        font-size: 35px;
+        display: block;
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+    }
+
+    .notification-success {
+        background-color: #90b900;
+    }
+
+
+    .notification-info {
+        background-color: #34495E;
+    }
+
+
+
+    @@-webkit-keyframes show-notification {
+        0% {
+            opacity: 0;
+            -webkit-transform: translate(0, -100%);
+        }
+
+        10% {
+            opacity: 1;
+            -webkit-transform: translate(0, 0);
+        }
+
+        90% {
+            opacity: 1;
+            -webkit-transform: translate(0, 0);
+        }
+
+        100% {
+            opacity: 0;
+            -webkit-transform: translate(0, -100%);
+        }
+    }
+
+    @@keyframes show-notification {
+        0% {
+            opacity: 0;
+            -webkit-transform: translate(0, -100%);
+            transform: translate(0, -100%);
+        }
+
+        10% {
+            opacity: 1;
+            -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+        }
+
+        90% {
+            opacity: 1;
+            -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+        }
+
+        100% {
+            opacity: 0;
+            -webkit-transform: translate(0, -100%);
+            transform: translate(0, -100%);
+        }
+    }
+</style>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script type="text/html" id="appendTemplate">
+    <div>The div that should be appended</div>
+</script>
+<script>
+    $(document).ready(function () {
+
+
+        var readURL = function (input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#picture').attr('src', e.target.result);
+                      $('#dashboardPic').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
+        $("#inputID").on('change', function () {
+            readURL(this);
+        });
+    });
+    @*var myJsVariable = parseFloat('@ViewBag.Time');*@
+    Highcharts.chart('container1', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+        },
+        legend: {
+            // enabled: true,
+
+          align: 'bottom',
+    verticalAlign: 'left',
+    layout: 'vertical'
+
+        },
+    title: {
+        text: ''
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+            }
+        }
+    },
+    series: [{
+        name: 'Work',
+        colorByPoint: true,
+        data: [{
+            name: 'Training',
+            y: 15.44,
+            sliced: true,
+            selected: true
+        }, {
+            name: 'Bug Fixing',
+            y: 11.84
+        }, {
+            name: 'Development',
+            y: 10.85
+        }, {
+            name: 'Support',
+            y: 4.67
+        },
+        {
+            name: 'Testing',
+            y: 1.64
+
+            }],
+        showInLegend: true
+    }]
+    });
+
+     function toggleDataTable() {
+    var chart = $('#container1').highcharts()
+    chart.update({
+      exporting: {
+        showTable: !chart.options.exporting.showTable
+      }
+    });
+    }
+
+        $('#editProfile').one("click",function () {
+         $('#tabs').append('<li><a data-toggle="tab" id="editTab" href="#editDetails">Edit Personal Details</a></li>');
+         $( "#editTab" ).click();
+    });
+
+         $("#picture").click(function () {
+        $("#inputID").click();
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#picture').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+        }
+
+
+        var notification;
+var container = document.querySelector('#notification-container');
+var visible = false;
+var queue = [];
+
+function createNotification() {
+    notification = document.createElement('div');
+    var btn = document.createElement('button');
+    var title = document.createElement('div');
+    var msg = document.createElement('div');
+    btn.className = 'notification-close';
+    title.className = 'notification-title';
+    msg.className = 'notification-message';
+    btn.addEventListener('click', hideNotification, false);
+    notification.addEventListener('animationend', hideNotification, false);
+    notification.addEventListener('webkitAnimationEnd', hideNotification, false);
+    notification.appendChild(btn);
+    notification.appendChild(title);
+    notification.appendChild(msg);
+}
+
+function updateNotification(type, title, message) {
+    notification.className = 'notification notification-' + type;
+    notification.querySelector('.notification-title').innerHTML = title;
+    notification.querySelector('.notification-message').innerHTML = message;
+}
+
+function showNotification(type, title, message) {
+    if (visible) {
+        queue.push([type, title, message]);
+        return;
+    }
+    if (!notification) {
+        createNotification();
+    }
+    updateNotification(type, title, message);
+    container.appendChild(notification);
+    visible = true;
+}
+
+function hideNotification() {
+    if (visible) {
+        visible = false;
+        container.removeChild(notification);
+        if (queue.length) {
+            showNotification.apply(null, queue.shift());
+        }
+    }
+}
+document.querySelector('#editProfile').addEventListener('click', showNotification.bind(null, 'info', 'Edit photo', 'You can change your photo by clicking on your current photo '), false);
+
+
+</script>

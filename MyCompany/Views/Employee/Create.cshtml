@@ -1,0 +1,420 @@
+﻿@model MyCompany.ViewModels.EmployeeViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm("Create", "Employee", FormMethod.Post, new
+{
+    enctype = "multipart/form-data",
+    id = "fileForm"
+}))
+{
+    @Html.AntiForgeryToken()
+
+    <hr />
+    
+    <div  style="border:1px solid #cecece; line-height:25px">
+        <img id="picture" src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" style="max-height:100px;max-width:100px;"  alt="avatar">
+        <a class="btn btn-outline-success" href="javascript:;">
+            <input id="inputID" type="file" name="image" size="40"
+                   style="display:none;"
+                   onchange="readURL(this);" />
+        </a>
+        <span class="label label-info" id="upload-file-info"></span>
+        <br /><br />
+        <ul class="list-unstyled" id="toImage" style="padding-left:3%;">
+            <li><i class="glyphicon glyphicon-user"></i> Full Name: <span id="targetFirstName"> </span> <span id="targetLastName"></span> </li>
+            <li> <i class="glyphicon glyphicon-home"></i> Address: <span id="targetAddress"></span> </li>
+        </ul>
+    </div>
+    <hr />
+    <div class="col-sm-9">
+        <ul class="nav nav-tabs" id="listTabs">
+            <li class="active"><a data-toggle="tab" href="#personal-details">Personal Details</a></li>
+            <li><a data-toggle="tab" href="#organizational">Organizational</a></li>
+            <li><a data-toggle="tab" id="systemTab" href="#system">System</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="personal-details">
+               
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="FirstName"><h4>First name</h4></label>
+                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter first name",@id="firstName" } })
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="LastName"><h4>Last name</h4></label>
+                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter first name",@id="lastName" } })
+                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="LivingAddress"><h4>Address</h4></label>
+                        @Html.EditorFor(model => model.LivingAddress, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter living address",@id="livingAddress" } })
+                        @Html.ValidationMessageFor(model => model.LivingAddress, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="AddressFromCard"><h4>Address ID</h4></label>
+                        @Html.EditorFor(model => model.AddressFromCard, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter address from ID" } })
+                        @Html.ValidationMessageFor(model => model.AddressFromCard, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="Education"><h4>Education</h4></label>
+                        @Html.EditorFor(model => model.Education, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter address from ID" } })
+                        @Html.ValidationMessageFor(model => model.AddressFromCard, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <h4>Is active?</h4>
+                        <label class="switch" style="margin:0px;">
+                            <input id="isActive" name="IsActive" type="checkbox" value="true" class="switch-input" checked>
+                            <span class="switch-label" data-on="" data-off=""></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <hr>
+
+            </div><!--/tab-pane-->
+            <div class="tab-pane" id="organizational">
+                <div class="form-group">
+
+                    <div class="col-xs-6">
+                        <label for="first_name"><h4>Work phone</h4></label>
+                        <input type="text" class="form-control" name="first_name" id="first_name" placeholder="first name" title="enter your first name if any.">
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-xs-6">
+                        <label for="last_name"><h4>Reports to</h4></label>
+                        <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" title="enter your last name if any.">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="mobile"><h4>Mobile</h4></label>
+                        <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
+                    </div>
+                </div>
+               
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="EnrollmentDate"><h4>Enrollment date</h4></label>
+                        @Html.EditorFor(model => model.EnrollmentDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter your enrollmentdate" } })
+                        @Html.ValidationMessageFor(model => model.EnrollmentDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="WorkStart"><h4>Work start</h4></label>
+                        @Html.EditorFor(model => model.WorkStart, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter your enrollmentdate" } })
+                        @Html.ValidationMessageFor(model => model.WorkStart, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="OfficialWorkStart"><h4>OfficialWork start </h4></label>
+                        @Html.EditorFor(model => model.OfficialWorkStart, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter your enrollmentdate" } })
+                        @Html.ValidationMessageFor(model => model.OfficialWorkStart, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="TeamLeadID"><h4>Team Leaders</h4></label>
+                        @Html.DropDownList("TeamLeadID", null, "Select option", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                        </div>
+
+
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <h4>Is team lead?</h4>
+                            <label class="switch" style="margin:0px;">
+                                <input id="isTeamLead" name="IsTeamLead" type="checkbox" value="true" class="switch-input">
+                                <span class="switch-label" data-on="" data-off=""></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div><!--/tab-pane-->
+            <div class="tab-pane" id="system">
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="User.UserName"><h4>Username</h4></label>
+                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter living address" } })
+                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="Password"><h4>Password</h4></label>
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = "enter living address" } })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="mobile"><h4>Mobile</h4></label>
+                        <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-xs-6">
+                        <label for="email"><h4>Email</h4></label>
+                        <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-xs-6">
+                        <label for="RoleID"><h4>User role</h4></label>
+                        <select class="form-control" id="userRole" name="RoleID">
+                            <option value="1">Admin</option>
+                            <option value="2">Regular user</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-xs-6">
+                        <label for="email"><h4>Mobile phone</h4></label>
+                        <input type="email" class="form-control" id="location" placeholder="somewhere" title="enter a location">
+                    </div>
+                </div>
+
+
+            </div><!--/tab-pane-->
+        </div><!--/tab-content-->
+
+        <div class="form-group">
+            <div class="col-xs-12">
+                <br>
+                <input id="generate" class="btn btn-lg btn-success pull-right" type="submit">
+                <!--<button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>-->
+            </div>
+        </div>
+    </div>
+
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script>
+
+    $("#picture").click(function () {
+        $("#inputID").click();
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#picture').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $('#isActive').click(function () {
+        var checking = $(this).prop("checked");
+        if (checking == false) {
+            $("#systemTab").remove();
+        } else if (checking == true) {
+            $('#listTabs').append(' <li><a data-toggle="tab" id="systemTab" href="#system">System</a></li>');
+        }
+    });
+    $(document).ready(function () {
+        $('#fileForm').on('submit', function (e) {
+            // validation code here
+            if (valid) {
+                e.preventDefault();
+            }
+        });
+    });
+
+    var inputFirstName = document.getElementById('firstName');
+    var inputLastName = document.getElementById('lastName');
+    var inputAddress = document.getElementById('livingAddress');
+
+  
+    inputFirstName.onkeyup = function(){
+    document.getElementById('targetFirstName').innerHTML = inputFirstName.value;
+    }
+     inputLastName.onkeyup = function(){
+    document.getElementById('targetLastName').innerHTML = inputLastName.value;
+    }
+     inputAddress.onkeyup = function(){
+    document.getElementById('targetAddress').innerHTML = inputAddress.value;
+    }
+
+</script>
+
+<style>
+
+    .switch {
+        display: block;
+        margin: 12px auto;
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        width: 70px;
+        height: 30px;
+        padding: 3px;
+        background-color: white;
+        -moz-border-radius: 18px;
+        -webkit-border-radius: 18px;
+        border-radius: 18px;
+        cursor: pointer;
+    }
+
+    .switch-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+
+    .switch-label {
+        position: relative;
+        display: block;
+        height: inherit;
+        font-size: 10px;
+        text-transform: uppercase;
+        background: #bdc3c7;
+        -moz-border-radius: inherit;
+        -webkit-border-radius: inherit;
+        border-radius: inherit;
+        -webkit-transition: 0.15s ease-out;
+        -moz-transition: 0.15s ease-out;
+        -o-transition: 0.15s ease-out;
+        transition: 0.15s ease-out;
+        -webkit-transition-property: opacity background border;
+        -moz-transition-property: opacity background border;
+        -o-transition-property: opacity background border;
+        transition-property: opacity background border;
+    }
+
+        .switch-label:before, .switch-label:after {
+            position: absolute;
+            top: 50%;
+            margin-top: -.5em;
+            line-height: 1;
+            -webkit-transition: inherit;
+            -moz-transition: inherit;
+            -o-transition: inherit;
+            transition: inherit;
+            font-size: 14px;
+        }
+
+        .switch-label:before {
+            content: attr(data-off);
+            right: 11px;
+            color: #000;
+        }
+
+        .switch-label:after {
+            content: attr(data-on);
+            left: 11px;
+            color: white;
+            opacity: 0;
+        }
+
+    .switch-input:checked ~ .switch-label {
+        background: #34495E;
+    }
+
+        .switch-input:checked ~ .switch-label:before {
+            opacity: 0;
+        }
+
+        .switch-input:checked ~ .switch-label:after {
+            opacity: 1;
+        }
+
+    .switch-handle {
+        position: absolute;
+        top: 9px;
+        left: 10px;
+        width: 18px;
+        height: 18px;
+        background: white;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        -webkit-transition: left 0.15s ease-out;
+        -moz-transition: left 0.15s ease-out;
+        -o-transition: left 0.15s ease-out;
+        transition: left 0.15s ease-out;
+    }
+
+        .switch-handle:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -6px 0 0 -6px;
+            width: 12px;
+            height: 12px;
+            background: #f9f9f9;
+            -moz-border-radius: 6px;
+            -webkit-border-radius: 6px;
+            border-radius: 6px;
+            -moz-box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+            -webkit-box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+            box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+            background-image: -webkit-linear-gradient(top, #eeeeee, white);
+            background-image: -moz-linear-gradient(top, #eeeeee, white);
+            background-image: -o-linear-gradient(top, #eeeeee, white);
+            background-image: linear-gradient(to bottom, #eeeeee, white);
+        }
+
+
+    .switch-input:checked ~ .switch-handle {
+        background: #1abc9c;
+        left: 45px;
+        -moz-box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+        -webkit-box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+        box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+        .switch-input:checked ~ .switch-handle:before {
+            background: #1abc9c;
+        }
+
+    .switch-green > .switch-input:checked ~ .switch-label {
+        background: #4fb845;
+    }
+
+#picture{
+    float:left;
+}
+
+#toImage{
+    display:inline-block;
+} 
+</style>
+
